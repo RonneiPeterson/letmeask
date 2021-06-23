@@ -11,7 +11,8 @@ type UserType = {
 
 type AuthContextType = {
   user: UserType | undefined,
-  signInWithGogle: () => Promise<void>;//funcao async
+  signInWithGogle: () => Promise<void>,//funcao async
+  signOut:()=>void
 }
 
 type AuthContextProviderProps = {
@@ -98,8 +99,12 @@ export function AuthContextProvider(props: AuthContextProviderProps)
         avatar: photoURL
       });
     }
-
   }
+
+    async function signOut()
+    {
+      return await auth.signOut();
+    }
 
 
 
@@ -112,7 +117,7 @@ export function AuthContextProvider(props: AuthContextProviderProps)
     */
 
   return (
-    <AuthContext.Provider value={{ user, signInWithGogle }}>
+    <AuthContext.Provider value={{ user, signInWithGogle,signOut }}>
       {props.children}
     </AuthContext.Provider>
   );

@@ -10,6 +10,8 @@ import { Button } from "../components/Button";
 //contexto AuthContext
 import { useAuth } from "../hooks/useAuth";
 import { createCipher } from 'crypto';
+import { FormEvent, useState } from 'react';
+import { database } from '../services/Firebase';
 
 export function Home(){
 
@@ -17,6 +19,8 @@ export function Home(){
     
     //const {user,signInWithGogle}=useContext(AuthContext);
     const {user,signInWithGogle}=useAuth();//usando um hook personalizado
+
+    const [roomCode,setRoomCode]=useState('');
     
     //ao clicar no botao se nao estiver conectado no google
     //chama a funcao passada via context
@@ -26,6 +30,7 @@ export function Home(){
                 try
                 {
                     await signInWithGogle();
+                    history.push('/rooms/new');
                 }
                 catch(e)
                 {
@@ -39,6 +44,26 @@ export function Home(){
         }
        
     }
+
+async function handleJoinRoom(event:FormEvent){
+    event.preventDefault();
+
+    if (roomCode.trim()==='')
+    {
+        return;
+    }
+
+    const roomRef=await database.ref(`rooms/${roomCode}`).get();
+
+    if (!roomRef.exists()){
+        alert('Room does not exist');
+        return;
+    }
+
+    history.push(`/rooms/${roomCode}`)
+}
+
+
 
 return(
     <div id="page-auth">
@@ -59,10 +84,12 @@ return(
 
                 {/* Fara o desenho da linha que divide */}
                 <div className="separator">ou entre em uma sala</div>
-                <form>
+                <form onSubmit={handleJoinRoom}>
                         <input
                         type="text"
                         placeholder="Digite o código da sala"
+                        value={roomCode}
+                        onChange={(e)=>setRoomCode(e.target.value)}
                         />
                         <Button  
                         type="submit">

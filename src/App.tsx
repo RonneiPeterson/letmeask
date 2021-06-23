@@ -5,8 +5,9 @@ import { NewRoom } from './pages/NewRoom';
 //@types/react-router-dom que são os tipos
 //para o typescript desse pacote, pois ele nao foi
 //construido nativamente para usar o TS
-import { BrowserRouter, Route } from 'react-router-dom';
+import { BrowserRouter, Route,Switch } from 'react-router-dom';
 import { AuthContextProvider } from './contexts/AuthContext';
+import { Room } from './pages/Room';
 
 
 
@@ -15,8 +16,11 @@ function App() {
     <BrowserRouter>
     {/* Contexto de autenticacao */}
       <AuthContextProvider>
-        <Route path="/" exact><Home /></Route>
-        <Route path="/rooms/new" ><NewRoom /></Route>
+        <Switch>
+          <Route path="/"  exact  component={Home}/>
+          <Route path="/rooms/new" component={NewRoom}/>
+          <Route path="/rooms/:id" component={Room}/>
+        </Switch>
       </AuthContextProvider>
     </BrowserRouter>
   )

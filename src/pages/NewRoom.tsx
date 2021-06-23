@@ -4,12 +4,15 @@ import '../styles/Auth.scss';
 import { Button } from '../components/Button';
 import { Link, useHistory } from 'react-router-dom';
 import { useAuth } from '../hooks/useAuth';
-import { useEffect } from 'react';
+import { FormEvent, useEffect, useState } from 'react';
+import { database } from '../services/Firebase';
 
 export function NewRoom() {
 
-    const { user } = useAuth();
+    const { user,signOut } = useAuth();
     const history = useHistory();
+
+    const [newRoom,setNewRoom]=useState('');
 
 
     //se tentar vir direto para essa rota e nao estiver logado
@@ -20,6 +23,34 @@ export function NewRoom() {
             history.push('/');
         }
     }, [])
+
+    async function deslogar(){
+
+        await signOut();
+
+        history.push('/');
+
+    }
+
+    async function handleCreateRoom(event:FormEvent)
+    {
+        event.preventDefault();
+
+        if (newRoom.trim()===''){
+            return;
+        }
+
+        //referencia para um registro de dados do banco (1 entidade)
+        const roomRef=database.ref('rooms');
+
+        const firebaseRoom=await roomRef.push({
+            title:newRoom,
+            authorId:user?.id,
+        });
+
+        history.push(`/rooms/:${firebaseRoom.key}`)        
+    }
+
 
     return (
         <div id="page-auth">
@@ -33,10 +64,13 @@ export function NewRoom() {
                     <img src={LogoImg} alt="LetmeAsk" />
                     <h2>Tirar depois: {user?.name}</h2>
                     <h2>Criar uma nova sala</h2>
-                    <form>
+
+                    <form onSubmit={handleCreateRoom}>
                         <input
                             type="text"
                             placeholder="Nome da Sala"
+                            value={newRoom}
+                            onChange={(e)=>setNewRoom(e.target.value)}
                         />
                         <Button
                             type="submit">
@@ -45,6 +79,8 @@ export function NewRoom() {
 
                     </form>
                     <p>Quer entrar em uma sala existente? <Link to="/"> Clique aqui </Link></p>
+
+                    <p onClick={deslogar}>Sair </p>
                 </div>
 
             </main>
