@@ -9,7 +9,7 @@ import { Button } from "../components/Button";
 //um hook personalizado que ja retorna o useContext do
 //contexto AuthContext
 import { useAuth } from "../hooks/useAuth";
-import { createCipher } from 'crypto';
+
 import { FormEvent, useState } from 'react';
 import { database } from '../services/Firebase';
 
@@ -18,7 +18,7 @@ export function Home(){
     const history=useHistory();
     
     //const {user,signInWithGogle}=useContext(AuthContext);
-    const {user,signInWithGogle}=useAuth();//usando um hook personalizado
+    const {user,signInWithGoogle}=useAuth();//usando um hook personalizado
 
     const [roomCode,setRoomCode]=useState('');
     
@@ -29,7 +29,7 @@ export function Home(){
         if (!user){
                 try
                 {
-                    await signInWithGogle();
+                    await signInWithGoogle();
                     history.push('/rooms/new');
                 }
                 catch(e)
@@ -60,7 +60,16 @@ async function handleJoinRoom(event:FormEvent){
         return;
     }
 
-    history.push(`/rooms/${roomCode}`)
+    if (roomRef.val().endedAt){
+        alert('Room already closed!');
+        return;
+    }
+
+    if (roomRef.val().authorId==user?.id)
+    {
+        history.push(`/admin/rooms/${roomCode}`)
+    }
+    else history.push(`/rooms/${roomCode}`)
 }
 
 

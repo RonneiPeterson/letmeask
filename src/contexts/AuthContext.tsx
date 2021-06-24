@@ -11,7 +11,7 @@ type UserType = {
 
 type AuthContextType = {
   user: UserType | undefined,
-  signInWithGogle: () => Promise<void>,//funcao async
+  signInWithGoogle: () => Promise<void>,//funcao async
   signOut:()=>void
 }
 
@@ -74,7 +74,7 @@ export function AuthContextProvider(props: AuthContextProviderProps)
   }, [])
 
   //**FUNCAO PASSADA VIA CONTEXT PARA LOGAR NO GOOGLE * */
-  async function signInWithGogle() {
+  async function signInWithGoogle() {
 
     //autenticacao do usuario no Firebase
     const provider = new firebase.auth.GoogleAuthProvider();
@@ -117,7 +117,7 @@ export function AuthContextProvider(props: AuthContextProviderProps)
     */
 
   return (
-    <AuthContext.Provider value={{ user, signInWithGogle,signOut }}>
+    <AuthContext.Provider value={{ user, signInWithGoogle,signOut }}>
       {props.children}
     </AuthContext.Provider>
   );

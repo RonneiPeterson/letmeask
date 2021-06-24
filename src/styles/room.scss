@@ -12,8 +12,18 @@
 
             > img{
                 max-height: 45px;
+                cursor: pointer;
             }
 
+            >div{
+                
+                display: flex;
+                gap:16px;//se tiver mais de um elemento poe um espacamento entre eles
+
+                button{
+                    height: 40px;
+                }
+            }
         }
     }
 
@@ -99,6 +109,10 @@
                     }
                 }
             }
+        }
+
+        .question-list{
+            margin-top: 32px;
         }
 
     }
