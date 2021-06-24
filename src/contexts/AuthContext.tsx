@@ -12,7 +12,8 @@ type UserType = {
 type AuthContextType = {
   user: UserType | undefined,
   signInWithGoogle: () => Promise<void>,//funcao async
-  signOut:()=>void
+  signOut:()=>void,
+  clearUser:()=>void
 }
 
 type AuthContextProviderProps = {
@@ -80,6 +81,7 @@ export function AuthContextProvider(props: AuthContextProviderProps)
     const provider = new firebase.auth.GoogleAuthProvider();
 
     const result = await auth.signInWithPopup(provider);
+    //console.log(result.user)
 
     //se tem um usuario no retorno
     if (result.user) {
@@ -104,6 +106,13 @@ export function AuthContextProvider(props: AuthContextProviderProps)
     async function signOut()
     {
       return await auth.signOut();
+      //a funcao que chamou essa ira chamar a limpeza do user
+      
+    }
+
+    function clearUser(){
+      setUser(undefined);
+        
     }
 
 
@@ -117,7 +126,7 @@ export function AuthContextProvider(props: AuthContextProviderProps)
     */
 
   return (
-    <AuthContext.Provider value={{ user, signInWithGoogle,signOut }}>
+    <AuthContext.Provider value={{ user, signInWithGoogle,signOut,clearUser }}>
       {props.children}
     </AuthContext.Provider>
   );

@@ -26,6 +26,9 @@ export function Home(){
     //chama a funcao passada via context
     async function handleCreateRoom(){
         
+        //console.log('clicou no crie com o google ');
+        //console.log(user);
+
         if (!user){
                 try
                 {
@@ -34,8 +37,9 @@ export function Home(){
                 }
                 catch(e)
                 {
+                    window.alert('Não foi possível fazer o login com o Google');
                     //quando nao da certo o login
-                    //console.log('erro:',e);
+                    console.log('erro:',e);
                 }
             }
 
@@ -65,7 +69,7 @@ async function handleJoinRoom(event:FormEvent){
         return;
     }
 
-    if (roomRef.val().authorId==user?.id)
+    if (roomRef.val().authorId===user?.id)
     {
         history.push(`/admin/rooms/${roomCode}`)
     }

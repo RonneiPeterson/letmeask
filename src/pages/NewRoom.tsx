@@ -9,7 +9,7 @@ import { database } from '../services/Firebase';
 
 export function NewRoom() {
 
-    const { user,signOut } = useAuth();
+    const { user,signOut,clearUser } = useAuth();
     const history = useHistory();
 
     const [newRoom,setNewRoom]=useState('');
@@ -27,9 +27,10 @@ export function NewRoom() {
     async function deslogar(){
 
         await signOut();
-
+        
+        //limpa o estado
+        clearUser();
         history.push('/');
-
     }
 
     async function handleCreateRoom(event:FormEvent)
@@ -43,12 +44,21 @@ export function NewRoom() {
         //referencia para um registro de dados do banco (1 entidade)
         const roomRef=database.ref('rooms');
 
-        const firebaseRoom=await roomRef.push({
-            title:newRoom,
-            authorId:user?.id,
-        });
+        try{
 
-        history.push(`/admin/rooms/${firebaseRoom.key}`);
+            const firebaseRoom=await roomRef.push({
+                title:newRoom,
+                authorId:user?.id,
+            });
+
+            await history.push(`/admin/rooms/${firebaseRoom.key}`);
+        }
+        catch(error){
+            window.alert('Não foi possível criar a sala');
+            console.log('Erro ao tentar criar a sala:',error);
+        }
+
+       
     }
 
 
@@ -62,7 +72,6 @@ export function NewRoom() {
             <main>
                 <div className="main-content">
                     <img src={LogoImg} alt="LetmeAsk" />
-                    <h2>Tirar depois: {user?.name}</h2>
                     <h2>Criar uma nova sala</h2>
 
                     <form onSubmit={handleCreateRoom}>
@@ -80,7 +89,9 @@ export function NewRoom() {
                     </form>
                     <p>Quer entrar em uma sala existente? <Link to="/"> Clique aqui </Link></p>
 
-                    <p onClick={deslogar}>Sair </p>
+                    <p 
+                    className='logoff'
+                    onClick={deslogar}>Sair </p>
                 </div>
 
             </main>

@@ -81,9 +81,20 @@
             font-size: 14px;
             color:#737380;
             margin-top: 16px;
+            
             a{
                 color:#e559f9;
             }
+        }
+        .logoff{
+            
+            color: red;
+            font-weight: 500;
+            font: 500 16px 'Poppins',sans-serif;
+            cursor: pointer;
+            //border: 1px solid #e2e2e2;
+            //border-radius: 10%;
+            //width: 50px;
         }
 
     }
