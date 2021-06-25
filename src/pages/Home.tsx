@@ -12,6 +12,8 @@ import { useAuth } from "../hooks/useAuth";
 
 import { FormEvent, useState } from 'react';
 import { database } from '../services/Firebase';
+import { useTheme } from '../hooks/useTheme';
+
 
 export function Home(){
 
@@ -21,6 +23,8 @@ export function Home(){
     const {user,signInWithGoogle}=useAuth();//usando um hook personalizado
 
     const [roomCode,setRoomCode]=useState('');
+
+    const {theme}=useTheme();
     
     //ao clicar no botao se nao estiver conectado no google
     //chama a funcao passada via context
@@ -69,6 +73,7 @@ async function handleJoinRoom(event:FormEvent){
         return;
     }
 
+    //se a ROOM foi criada pelo usuario atual abre o admin
     if (roomRef.val().authorId===user?.id)
     {
         history.push(`/admin/rooms/${roomCode}`)
@@ -79,14 +84,17 @@ async function handleJoinRoom(event:FormEvent){
 
 
 return(
-    <div id="page-auth">
+    <div id="page-auth" className={theme}>
+
         <aside>
             <img src={IllustrationImg} alt="Ilustração simbolizando perguntas e respostas"></img>
             <strong>Crie salas de Q&amp;A ao vivo</strong>
             <p>Tire as dúvidas da sua audiência em tempo real</p>
         </aside>
+
         <main>
             <div className="main-content">
+                
                 <img src={LogoImg} alt="LetmeAsk" />
                 <button className="create-room"
                 onClick={handleCreateRoom}

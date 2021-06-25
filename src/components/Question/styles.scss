@@ -12,6 +12,24 @@
         margin-top: 8px;
 
     }
+ 
+
+    //classe quando a pergunta esta em destaque
+    &.highlighted{
+
+       background: #F4F0FF; 
+       border: 1px solid #835AFD;
+       //passando o texto do nome para mais escuro
+       footer .user-info span {
+           color:#29292E;
+       }
+    }
+
+    //classe quando a pergunta foi respondida, ela tem que vir abaixo da highlighted
+    //porque caso tenha as duas a que vai prevalecer é a respondida
+    &.answered{
+        background: #DBDCDD; 
+    }
     
     p{
         color:#29292e;
@@ -21,55 +39,58 @@
         justify-content: space-between;
         align-items: center;
         margin-top: 24px;
-    }
 
-    //dados do usuario quando logado
-    .user-info{
-        display: flex;
-        align-items: center;
+        //dados do usuario quando logado
+        .user-info{
+            display: flex;
+            align-items: center;
 
-    img{
-        width: 32px;
-        height: 32px;
-        border-radius: 50%;
+            img{
+                width: 32px;
+                height: 32px;
+                border-radius: 50%;
+                }
+            span{
+                margin-left: 8px;
+                color: #737380;
+                font-size: 14px;
+            }
         }
-    span{
-        margin-left: 8px;
-        color: #737380;
-        font-size: 14px;
-    }
-    }
+        > div { 
+            display: flex;
+            gap:16px;
+            
+        }
 
-    button{
-        border:0;
-        background: transparent;
-        cursor:pointer;
-        transition: filter 0.2s;
+        button{
+            border:0;
+            background: transparent;
+            cursor:pointer;
+            transition: filter 0.2s;
 
-        &.like-button{
-            display:flex;
-            align-items: flex-end;
-            color:#737380;
-            gap:8px;
+            &.like-button{
+                display:flex;
+                align-items: flex-end;
+                color:#737380;
+                gap:8px;
 
-            //quando tiver a classe "liked" no like-button
-            &.liked{
-                color:#835afd;
+                //quando tiver a classe "liked" no like-button
+                &.liked{
+                    color:#835afd;
 
-                // Pega a imagem SVG na tag path encontra a propriedade stroke e troca a cor
-                svg path{
-                    stroke:#835afd;
+                    // Pega a imagem SVG na tag path encontra a propriedade stroke e troca a cor
+                    svg path{
+                        stroke:#835afd;
+                    }
+
+
                 }
 
-
             }
-
-        }
-        &:hover{
-            filter:brightness(0.7)
+            &:hover{
+                filter:brightness(0.7)
+            }
         }
     }
-
-
-    
+   
 }

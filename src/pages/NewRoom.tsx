@@ -22,7 +22,7 @@ export function NewRoom() {
         if (!user) {
             history.push('/');
         }
-    }, [user])
+    }, [user,history])
 
     async function deslogar(){
 
