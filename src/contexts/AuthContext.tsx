@@ -11,7 +11,7 @@ type UserType = {
 
 type AuthContextType = {
   user: UserType | undefined;
-  //isloading:boolean;
+  isloading?:boolean;
   signInWithGoogle: () => Promise<void>;//funcao async
   signOut:()=>void;
   clearUser:()=>void;
@@ -35,7 +35,7 @@ export function AuthContextProvider(props: AuthContextProviderProps)
   //estados "globais" que serao compartilhados
   const [user, setUser] = useState<UserType>()
 
-  //const [isloading,setIsloading]=useState<boolean>(true);
+  const [isloading,setIsloading]=useState<boolean>(true);
 
 
   //Na primeira vez que entrar ([]) ele verifica se tem um usuario
@@ -69,7 +69,7 @@ export function AuthContextProvider(props: AuthContextProviderProps)
 
       }
 
-      //setIsloading(false);
+      setIsloading(false);
     })
 
     
@@ -134,7 +134,7 @@ export function AuthContextProvider(props: AuthContextProviderProps)
 
   return (
     <AuthContext.Provider value={{ user, signInWithGoogle,signOut,clearUser}}>
-      {props.children}
+      {!isloading?props.children:<div>Carregando</div>}
     </AuthContext.Provider>
   );
 }

@@ -28,9 +28,9 @@ export function AdminRoom() {
     const params = useParams<RoomParams>();
     const roomId = params.id;
     const history = useHistory();
-    const {user}=useAuth();
+    const {user,isloading}=useAuth();
 
-    const { title, questions } = useRoom(roomId)
+    const { title, questions,roomAuthorId } = useRoom(roomId)
 
     const {theme}=useTheme();
 
@@ -68,6 +68,27 @@ export function AdminRoom() {
 
     }
 
+    useEffect(()=>{
+
+        if (!user)
+        {
+            history.push('/');
+        }
+        else{
+            /*   
+            //esta logado, vou conferir se o usuario é o dono dessa sala
+               if (!isloading && user.id!=roomAuthorId)
+                {
+                    console.log('user id: ',user.id);
+                    console.log('Roomauthorid:',roomAuthorId);
+                    window.alert('Você não é autor dessa sala');
+                }
+
+*/
+        }
+
+
+    },[user]);
 
 
     return (

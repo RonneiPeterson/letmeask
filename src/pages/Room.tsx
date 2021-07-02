@@ -3,7 +3,7 @@ import logoImg from '../assets/images/logo.svg'
 import { Button } from "../components/Button"
 import '../styles/room.scss'
 import { RoomCode } from '../components/RoomCode';
-import { FormEvent, useState } from "react";
+import { FormEvent, useEffect, useState } from "react";
 import { useAuth } from "../hooks/useAuth";
 import { database } from "../services/Firebase";
 import { Question } from "../components/Question";
@@ -87,6 +87,7 @@ export function Room() {
         }
 
     }
+
 
 
 

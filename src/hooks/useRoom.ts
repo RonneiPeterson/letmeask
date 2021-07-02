@@ -35,6 +35,7 @@ type FirebaseQuestions=Record<string,{
 export function useRoom(roomId:string){
     const [questions,setQuestions]=useState<QuestionType[]>([]);
     const [title,setTitle]=useState('');
+    const [roomAuthorId,setRoomAuthorId]=useState('');
     const{user}=useAuth();
 
     useEffect(()=>{
@@ -46,8 +47,24 @@ export function useRoom(roomId:string){
             return;
         }
 
-        //console.log(roomRef);
-        //listener "on" 
+        //* PEGANDO OS DADOS DA SALA INDEPENDENTE SE TEM QUESTION OU NAO */
+        roomRef.get().then((snapshot) => {
+            if (snapshot.exists()) 
+            {
+                //id do autor
+                setRoomAuthorId(snapshot.val().authorId);
+                //title da sala
+                setTitle(snapshot.val().title);
+            } else {
+                    console.log("Sem dados da Sala");
+            }
+            }).catch((error) => {
+                console.error('Erro buscar dados da sala ',error);
+            });
+        //* */
+
+        
+        //listener "on"  para "escutar" alteracao dos dados e listar as questions
         roomRef.on('value',room=>{
             
             const databaseRoom=room.val();
@@ -83,7 +100,7 @@ export function useRoom(roomId:string){
                     }
                     })
                 
-                    setTitle(databaseRoom.title);
+                    
                     setQuestions(parsedQuestions);
         })
 
@@ -95,8 +112,8 @@ export function useRoom(roomId:string){
                 }
         }
 
-    },[roomId,user?.id])
+    },[roomId,user?.id]);
 
-    return {questions,title}
+    return {questions,title,roomAuthorId}
 
 }
